@@ -1,6 +1,34 @@
+/// @file src/main.rs
+mod act;
 mod git;
-use crate::git::utils::get_git_repository_path;
+mod paths;
+use std::{env, string::String};
+
+use crate::act::act_init;
+use crate::git::get_git_repository;
+
+fn help() -> String {
+    return "
+            usage: act [--flags]
+            \t\t git-repo\n
+            \t\t init
+          "
+    .to_string();
+}
 
 fn main() {
-    println!("{}", get_git_repository_path());
+    let args: Vec<String> = env::args().collect();
+
+    if args.len() >= 1 {
+        let farg = &args[2];
+        print!("{}", farg);
+        match farg.as_str() {
+            "git-repo" => {
+                println!("{}", get_git_repository())
+            }
+            "init" => act_init(),
+            &_ => todo!(),
+        }
+    }
+    panic!("{}", help());
 }
